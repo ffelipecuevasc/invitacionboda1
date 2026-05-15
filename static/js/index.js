@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 2. CUENTA REGRESIVA ---
     const manejarCuentaRegresiva = () => {
-        const fechaFin = new Date('December 31, 2026 23:59:59').getTime();
+        const fechaFin = new Date('September 11, 2026 16:00:00').getTime();
 
         const timer = setInterval(() => {
             const ahora = new Date().getTime();
@@ -63,6 +63,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const linterna = document.getElementById('linterna-bg');
         if (!linterna) return;
 
+        // NUEVO: Lógica de "Apagado Inteligente"
+        const zonasBloqueo = document.querySelectorAll('.pausar-linterna');
+
+        zonasBloqueo.forEach(zona => {
+            // Cuando el mouse entra, ocultamos la linterna
+            zona.addEventListener('mouseenter', () => {
+                linterna.classList.add('linterna-apagada');
+            });
+            // Cuando el mouse sale, la volvemos a encender
+            zona.addEventListener('mouseleave', () => {
+                linterna.classList.remove('linterna-apagada');
+            });
+        });
+
         // Función unificada para actualizar coordenadas
         const actualizarPosicion = (clientX, clientY) => {
             requestAnimationFrame(() => {
@@ -78,17 +92,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Escucha para Toque (Mobile/Tablets)
         document.addEventListener('touchmove', (e) => {
-            // Prevenimos el scroll si queremos que el dedo solo mueva la linterna
-            // Si quieres que el usuario pueda hacer scroll mientras mueve la linterna,
-            // borra la siguiente línea (e.preventDefault()):
-
             const toque = e.touches[0];
             actualizarPosicion(toque.clientX, toque.clientY);
-        }, { passive: true }); // passive: true mejora el rendimiento del scroll en móviles
+        }, { passive: true });
     };
-    // Inicializar funciones
+
+    // --- 5. EFECTO DE PARTÍCULAS BOTÁNICAS (CANVAS) ---
+    const manejarParticulasBotanicas = () => {
+        const canvas = document.getElementById('hojas-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        let W = canvas.width = canvas.offsetWidth;
+        let H = canvas.height = canvas.offsetHeight;
+
+        window.addEventListener('resize', () => {
+            W = canvas.width = canvas.offsetWidth;
+            H = canvas.height = canvas.offsetHeight;
+        });
+
+        // PALETA BOTÁNICA VINTAGE (Adaptado a tu nueva paleta)
+        const COLORS = [
+            'rgba(102, 105, 86,',   // #666956 (Primary - Oliva Oscuro)
+            'rgba(141, 142, 124,',  // #8d8e7c (Secondary - Oliva Medio)
+            'rgba(176, 137, 129,',  // #b08981 (Tertiary - Rosa apagado/Marrón)
+            'rgba(240, 192, 188,'   // #f0c0bc (Surface Variant - Rosa suave)
+        ];
+        const COUNT = 40; // Número de partículas en pantalla
+
+        const drawLeaf = (ctx, x, y, size, rotation, alpha, colorBase) => {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rotation);
+            ctx.beginPath();
+            ctx.moveTo(0, -size);
+            ctx.bezierCurveTo(size * 0.8, -size * 0.3, size * 0.6, size * 0.8, 0, size * 1.2);
+            ctx.bezierCurveTo(-size * 0.6, size * 0.8, -size * 0.8, -size * 0.3, 0, -size);
+            ctx.fillStyle = colorBase + alpha.toFixed(2) + ')';
+            ctx.fill();
+            ctx.restore();
+        };
+
+        const particulas = Array.from({ length: COUNT }, () => ({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            size: Math.random() * 6 + 4,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: Math.random() * 0.8 + 0.2,
+            rot: Math.random() * Math.PI * 2,
+            vrot: (Math.random() - 0.5) * 0.015,
+            alpha: Math.random() * 0.5 + 0.2,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            wobble: Math.random() * Math.PI * 2,
+        }));
+
+        const animar = () => {
+            ctx.clearRect(0, 0, W, H);
+            particulas.forEach(p => {
+                p.wobble += 0.01;
+                p.x += p.vx + Math.sin(p.wobble) * 0.3;
+                p.y += p.vy;
+                p.rot += p.vrot;
+
+                if (p.y > H + 20) {
+                    p.y = -20;
+                    p.x = Math.random() * W;
+                }
+
+                drawLeaf(ctx, p.x, p.y, p.size, p.rot, p.alpha, p.color);
+            });
+            requestAnimationFrame(animar);
+        };
+        animar();
+    };
+
+    // ==========================================
+    // INICIALIZACIÓN DE TODAS LAS FUNCIONES
+    // ==========================================
     manejarBienvenida();
     manejarCuentaRegresiva();
     manejarFormulario();
     manejarLinterna();
+    manejarParticulasBotanicas(); // <- Inyección del nuevo efecto
 });

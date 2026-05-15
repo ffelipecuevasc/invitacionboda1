@@ -1,7 +1,5 @@
-/* Estilos personalizados para la invitación */
-
 /* ========================================
-   CONTADOR PRO: GLASSMORPHISM & INNER GLOW
+   CONTADOR & ESTRUCTURA BASE
 ======================================== */
 
 .countdown-item {
@@ -17,28 +15,7 @@
     }
 }
 
-.glass-card {
-    /* Fondo semi-transparente con desenfoque de fondo */
-    background: rgba(250, 249, 244, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    border-radius: 1.5rem;
-
-    /* Concepto: Reflexión de Luz en los Bordes (Inner Glow) */
-    /* El borde superior e izquierdo simulan el impacto de la luz ambiental */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Borde base sutil */
-    border-top: 1.5px solid rgba(255, 255, 255, 0.8); /* Brillo superior */
-    border-left: 1.5px solid rgba(255, 255, 255, 0.4); /* Brillo lateral */
-
-    /* Sombra volumétrica para dar peso a la tarjeta */
-    box-shadow:
-            0 10px 25px -5px rgba(0, 0, 0, 0.1),
-            0 8px 10px -6px rgba(0, 0, 0, 0.05),
-            inset 0 -2px 10px rgba(74, 100, 82, 0.05); /* Sutil tinte interno verde */
-}
-
-/* Transiciones suaves para los cambios de estado */
+/* Transiciones suaves */
 .fade-in {
     animation: fadeIn 0.8s ease-in forwards;
 }
@@ -50,49 +27,46 @@
 
 input:focus, select:focus {
     outline: none;
-    border-color: #4a6452;
-    box-shadow: 0 0 0 2px rgba(74, 100, 82, 0.2);
+    border-color: #666956; /* Actualizado a nuevo Primary */
+    box-shadow: 0 0 0 2px rgba(102, 105, 86, 0.2);
 }
 
 /* ========================================
-   EFECTO LINTERNA RADIAL (HOVER STATE)
+   EFECTO LINTERNA RADIAL
 ======================================== */
 .linterna-mask {
     --x: 50vw;
     --y: 50vh;
-
-    /* 1. Vinculamos el SVG externo como fondo */
-    /* Ajusta la ruta dependiendo de dónde esté tu CSS respecto al SVG */
     background-image: url('../img/patron.svg');
     background-size: cover;
-
-    /* 2. Reducimos el radio de 350px a 180px para un efecto más puntual */
     -webkit-mask-image: radial-gradient(circle 180px at var(--x) var(--y), black 0%, transparent 100%);
     mask-image: radial-gradient(circle 180px at var(--x) var(--y), black 0%, transparent 100%);
-
     will-change: mask-image, -webkit-mask-image;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.linterna-apagada {
+    opacity: 0 !important;
 }
 
 /* ========================================
-   EFECTOS DEL H1 (HERO TITLE)
+   EFECTOS DEL H1 (HERO TITLE) - REFACTORIZADO
 ======================================== */
 
-/* 1. Efecto de Brillo Continuo (Sunbeam/Foil) */
+/* 1. Sunbeam Effect: Actualizado a la paleta Oliva/Rosa */
 .sunbeam-title {
-    /* Degradado adaptado a la paleta botánica: Oscuro -> Verde -> Blanco -> Verde -> Oscuro */
     background-image: linear-gradient(
             110deg,
-            #1b1c19 25%,      /* Color on-surface oscuro original */
-            #4a6452 40%,      /* Verde primary (transición sutil) */
-            #ffffff 50%,      /* Destello de luz blanca */
-            #4a6452 60%,      /* Verde primary */
-            #1b1c19 75%       /* Retorno al oscuro original */
+            #666956 25%,      /* Nuevo Primary (Oliva Oscuro) */
+            #8d8e7c 40%,      /* Nuevo Secondary (Oliva Medio) */
+            #ffffff 50%,      /* Destello de luz */
+            #8d8e7c 60%,      /* Nuevo Secondary */
+            #666956 75%       /* Regreso al Primary */
     );
     background-size: 200% auto;
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
-    /* La animación mueve el fondo continuamente de derecha a izquierda */
     animation: textShine 7s linear infinite;
 }
 
@@ -101,19 +75,29 @@ input:focus, select:focus {
     100% { background-position: -200% center; }
 }
 
-/* 2. Profundidad Drop-Shadow Multicapa */
+/* 2. Shadow 3D: Actualizado con el tinte del nuevo Primary #666956 */
 .shadow-3d-text {
-    /* Usamos filter: drop-shadow en lugar de text-shadow porque respeta el recorte del background-clip */
     filter:
-            drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.15))    /* 1. Sombra de contacto corta */
-            drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.2))   /* 2. Sombra de elevación (flotación) */
-            drop-shadow(0px 0px 30px rgba(255, 255, 255, 0.3)); /* 3. Halo de luz (glow) para separarlo del fondo del bosque */
+            drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.15))
+            drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.1))
+            drop-shadow(0px 0px 30px rgba(102, 105, 86, 0.15)); /* Tinte sutil del nuevo Oliva */
 }
 
-/* 3. El Ampersand como Joya (Focal Point) */
+/* 3. Ampersand Focal Point */
 .jewel-ampersand {
-    vertical-align: 0.1em;   /* ← eleva sutilmente, sin romper background-clip */
+    vertical-align: 0.1em;
     font-size: 0.75em;
     font-style: italic;
     margin: 0 0.15em;
+    color: #b08981; /* Aplicamos el color Tertiary directamente aquí para resaltarlo */
+}
+
+/* ========================================
+   EFECTO PARTÍCULAS BOTÁNICAS (CANVAS)
+======================================== */
+#hojas-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1; /* Detrás del texto (z-10) pero sobre el fondo */
+    pointer-events: none; /* Crucial para no bloquear clics */
 }
