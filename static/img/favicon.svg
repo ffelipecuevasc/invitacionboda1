@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+    <circle cx="32" cy="32" r="30" fill="#b08981" />
+    <circle cx="32" cy="32" r="26" fill="none" stroke="#fee4e5" stroke-width="1" opacity="0.5" />
+    <text x="32" y="36" font-family="Georgia, serif" font-size="20" fill="#ffffff" text-anchor="middle" dominant-baseline="middle" letter-spacing="1">
+        A<tspan font-size="14" fill="#fee4e5" font-style="italic">&amp;</tspan>A
+    </text>
+</svg>
