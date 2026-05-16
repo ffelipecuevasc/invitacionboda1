@@ -56,6 +56,19 @@ input:focus, select:focus {
 }
 
 /* ========================================
+   FONDO SECCIÓN CONFIRMAR
+======================================== */
+.patron-confirmacion {
+    background-image: url('../img/patron_seccion.svg');
+    background-size: 175px;
+    background-repeat: repeat;
+
+    /* Fase 2: Renderizado de Alto Rendimiento (GPU) */
+    will-change: transform, opacity;
+    transform-origin: center;
+}
+
+/* ========================================
    EFECTOS DEL H1 (HERO TITLE) - REFACTORIZADO
 ======================================== */
 

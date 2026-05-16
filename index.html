@@ -52,6 +52,17 @@
                     fontFamily: {
                         "headline": ['"Beau Rivage"', 'cursive'],
                         "body": ['"Montserrat"', 'sans-serif'],
+                    },
+                    /* FASE 1: Fotogramas clave para la Respiración Orgánica */
+                    keyframes: {
+                        ambientPulse: {
+                            '0%, 100%': { opacity: '0.15', transform: 'scale(1)' },
+                            '50%': { opacity: '0.35', transform: 'scale(1.05)' },
+                        }
+                    },
+                    /* FASE 1: Animación de 15s fluida e infinita */
+                    animation: {
+                        ambientPulse: 'ambientPulse 15s ease-in-out infinite',
                     }
                 }
             }
@@ -331,8 +342,10 @@
         </section>
 
         <!-- Sección de Confirmación -->
-        <section class="py-24 px-6 bg-primary relative z-20" id="confirmar">
-            <div class="max-w-3xl mx-auto bg-white text-on-surface p-8 md:p-12 rounded-3xl shadow-xl">
+        <section class="py-24 px-6 bg-primary relative z-20 overflow-hidden" id="confirmar">
+            <div class="patron-confirmacion animate-ambientPulse absolute inset-0 z-0 opacity-40 pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-3xl mx-auto bg-white text-on-surface p-8 md:p-12 rounded-3xl shadow-xl">
                 <h2 class="font-headline text-6xl md:text-7xl lg:text-8xl text-center mb-4 leading-tight pb-4 sunbeam-title shadow-3d-text">
                     Confirmar
                 </h2>
