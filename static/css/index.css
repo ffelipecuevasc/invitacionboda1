@@ -32,15 +32,21 @@ input:focus, select:focus {
 }
 
 /* ========================================
-   EFECTO LINTERNA RADIAL
+   EFECTO LINTERNA RADIAL (ACTUALIZADO)
 ======================================== */
 .linterna-mask {
     --x: 50vw;
     --y: 50vh;
     background-image: url('../img/patron.svg');
-    background-size: cover;
-    -webkit-mask-image: radial-gradient(circle 180px at var(--x) var(--y), black 0%, transparent 100%);
-    mask-image: radial-gradient(circle 180px at var(--x) var(--y), black 0%, transparent 100%);
+
+    /* Fase 4: Calibración y Seamless Pattern */
+    background-size: 175px; /* Tamaño del azulejo para que las flores no se vean gigantes */
+    background-repeat: repeat; /* Obliga al navegador a repetir el grid infinito */
+
+    /* Mantenemos tu degradado radial */
+    -webkit-mask-image: radial-gradient(circle 280px at var(--x) var(--y), black 0%, transparent 100%);
+    mask-image: radial-gradient(circle 280px at var(--x) var(--y), black 0%, transparent 100%);
+
     will-change: mask-image, -webkit-mask-image;
     transition: opacity 0.3s ease-in-out;
 }
